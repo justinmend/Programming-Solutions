@@ -70,7 +70,7 @@ private:
     recursion method:
     1. check if i and j are valid boundaries or current cell is a land
     else return
-    2. List of coordinate points:
+    2. Create a list of coordinate points:
     Up (-1,0)
     Down (1, 0)
     Left (0, -1)
@@ -85,10 +85,13 @@ private:
             return;
         }
         grid[i][j] = '0';
-        dfs(grid, i - 1, j);
-        dfs(grid, i + 1, j);
-        dfs(grid, i, j - 1);
-        dfs(grid, i, j + 1);
+
+        tuple<int, int> movements[] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        for (auto move : movements)
+        {
+            dfs(grid, i + get<0>(move), j + get<1>(move));
+        }
     }
 
     bool isValid(vector<vector<char>> &grid, int i, int j)
