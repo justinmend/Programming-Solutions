@@ -44,7 +44,7 @@ public:
             }
             else
             {
-                letterFreq[ch] = 0;
+                letterFreq[ch] = 1;
             }
         }
         for (int i = 0; i < s.length(); i++)
