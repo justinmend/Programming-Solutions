@@ -24,6 +24,10 @@ class Node:
         self.children = children
 """
 
+'''
+Implement using BFS
+'''
+
 
 class Solution:
     def maxDepth(self, root: 'Node') -> int:
@@ -67,3 +71,67 @@ class Solution:
 
         # Space Complexity - O(N):
         # N represents the total nodes from the tree that we add to our queue.
+
+
+"""
+Implement using DFS
+"""
+
+
+class Solution2:
+    def maxDepth(self, root: 'Node') -> int:
+        # Implement using DFS
+        # Assumptions:
+        # 1. For the input, are we given a tree with a height greater than 0? No, the input can be an empty tree.
+
+        # Note:
+        # 1. The depth of the n-ary tree is less than or equal to 1000.
+        # 2. The total number of nodes is between [0, 10^4].
+
+        # Brute Force:
+        # Use a stack?
+        # How should we add the nodes from the tree to our stack? DFS
+        # How do we keep track of the max depth?
+        # Use another stack to keep track of each node's height?
+
+        # 1. Check initially if root is null, if so return 0
+        # Check if root.children is null, if so return 1
+        # 2. Initialize stack 1 and stack 2 with root node and value of 1 respectively.
+        # 3. while stack is not empty:
+        # Pop current node and store in temp variable
+        # Also pop the height value of the current node from the second stack and store in a temp variable.
+        # Set the max depth to the value between the max of current max depth and the height of the temp node.
+        # 4. Iterate through the children of the temp node:
+        # Add to stack from right to left so that when items are popped off from stack, the order is from left to right.
+        # As we add nodes to the stack also add the height of the node to the second stack. When adding height, increment by 1.
+        # 5. Return the max depth value as our answer when the stack becomes empty.
+
+        if root is None:
+            return 0
+        if root.children is None:
+            return 1
+
+        stack = [root]
+        node_heights = [1]
+
+        maxDepth = 1
+
+        while stack:
+            temp = stack.pop()
+            height = node_heights.pop()
+            maxDepth = max(maxDepth, height)
+
+            for child in reversed(temp.children):
+                stack.append(child)
+                node_heights.append(height+1)
+
+        return maxDepth
+
+        # Time Complexity - O(N):
+        # N represents the total nodes in the tree that we iterate through. We iterate through all the nodes in the tree once.
+
+        # Space Complexity - O(S + N):
+        # S represents the total nodes from the tree that we add into our stack. The size of our stack is proportionate to the total amount of nodes in
+        # the input tree we are given.
+        # N represents the total amount of nodes' height in the tree we keep track of in our second stack. The size our node_heights stack is also proportionate
+        # to the total amount of nodes in the input tree we are given.
