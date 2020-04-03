@@ -12,13 +12,13 @@
   empty array.
 '''
 
-# Time - O(N^2)
+# Time - O(Nlog(N) * N^2) -> O(N^2)
 # N represents the length of the input array.
+# Initially we sort the array which takes O(Nlog(N)) but O(N^2) is bigger and is the boundary
+# therefore we can remove O(Nlog(N)).
 # We iterate through the array once.
 # For every number in the array, we iterate through the array again
 # to find the other two complementary numbers and have a triplet that satisfies the target sum.
-# If we take into account the built in python sort function in our time complexity, the actual
-# time complexity is O()
 
 # Space - O(N):
 # N represents the length of the input array.
