@@ -19,7 +19,11 @@ class SuffixTrie:
         # We iterate through every substring of the string.
 
         # Space - O(N^2):
-        #
+        # N represents the length of the input string.
+        # For each substring of the string and for each character in the particular substring,
+        # we are creating a new pair of key and object to map in the trie. If a character we encounter
+        # in a substring was already mapped from a previous substring then that is the only time we don't have to
+        # create a new object to map in the trie.
     def populateSuffixTrieFrom(self, string):
         # Every string added to the trie should end with the special endSymbol character "*"
 
