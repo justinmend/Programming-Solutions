@@ -3,10 +3,12 @@ Given a collection of distinct integers, return all possible permutations.
 '''
 # Time - O(N * N!):
 # N represents the length of the nums list input.
-# Generating permutations takes O(N *N!) time.
+# Generating all possible permutations takes O(N!) time.
+# For every permutation, it takes O(N) time to make a shallow copy of the nums array.
 
 # Space - O(N * N!):
-# We make O(N * N!) recursion calls which takes up space in our call stack frame.
+# We make O(N!) recursion calls to find all the possible permutations which takes up space in our call stack frame.
+# For every possible permutation, each array takes O(N) space.
 
 
 class Solution:
