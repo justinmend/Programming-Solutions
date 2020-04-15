@@ -26,9 +26,6 @@ You may assume that there are no duplicate edges in the input prerequisites.
 '''
 
 class Solution:
-    # Time - O(N^2) | Space - O(N^2):
-    # W have to try every course in numCourses as a starting point when we try to find
-    # a cycle in the graph.
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         # Implement using Topological Sort and DFS
         
@@ -54,11 +51,12 @@ class Solution:
         # Create dfs helper method which detects if there is a cycle in the graph?
         # Call containsCycle method for each course
         # Pass in the course key
-        # If containsCycle returns true, return False immediately
+        # If we've already checked out the course as a starting point ignore it.
+        # if containsCycle returns true for course, return False immediately
         
-        # Time - O(N^2) | Space - O(N^2)
+        # Time - O(V + E) | Space - O(N)
         for i in range(numCourses):
-            if courseGraph.containsCycle(i):
+            if not courseGraph.visited[i] and courseGraph.containsCycle(i):
                 return False
         
         # Return true since we didn't encounter any cycle
@@ -76,6 +74,7 @@ class CourseGraph:
         # How do we keep track of visited courses to make sure there is no cycle in the graph?
         # Create a boolean array with the length of numCourses
         self.visited = [False] * numCourses
+        self.traversed = [False] * numCourses
         
         # Add all courses as keys with their values an empty array.
         for i in range(self.numCourses):
@@ -96,29 +95,50 @@ class CourseGraph:
             course = prereq[1]
             self.graph[course].append(dep)
     
-    # Time - O(N):
-    # N represents the value of numCourses input.
-    # We iterate in a depth first search fashion and we track of courses we already visit.
-    # We have our base case to make sure we only visit a course once, that is, we make sure there
-    # is no cycle. Thus, worst case is we only visit each course in numCourses once.
+    # Time - O(V + E):
+    # V represents the vertices (courses) which is proportionate to the integer value of numCourses input.
+    # E represents the edges of each course, that is, the length of the adjaceny list containing the dependencies to the course.
+    # Worst case is there is no cycle in the graph and we end up traversing through all vertices and edges in the graph.
     
     # Space - O(N):
-    # N represents the value of numCourses input.
-    # At most we make a total of N recursion calls which takes up space in the call stack frame.
+    # N represents the integer value of numCourses input.
+    # Worst case is there is no cycle in the graph and we end up traversing through
+    # all courses therefore we make a total of N recursion calls. 
+    # Recursion calls takes up space in the call stack frame.
+    # We save space by not calling the containsCycle recursion method on courses we've already marked visited in the graph.
     def containsCycle(self, course):
+        # We iterate in a depth first search fashion and track the courses we visit.
+        # We have our base case to make sure we only visit a course once, that is, we ignore
+        # courses whose dependencies we've already verified has no cycle. 
+        # Also, we check if we are traversing a course more than once, if so we return True
+        # immediately since there is a cycle.
+        
         # Base Case:
         if self.visited[course]:
+            return False
+        
+        if self.traversed[course]:
             return True
 
-        # Set visited to true for current course
-        self.visited[course] = True
+        # Set traversed to true for current course to make sure we catch any cycle in the graph
+        self.traversed[course] = True
         
         # Iterate through all the graph keys (course):
             # Go depth first for each depency of the current course.
             # Call recursion
         
         for dep in self.graph[course]:
-            if self.containsCycle(dep):
+            if not self.visited[course] and self.containsCycle(dep):
                 return True
         
-        self.visited[course] = False
+        # Reset traversed to false, so we can traverse through the graph again and try different starting points of courses. 
+        self.traversed[course] = False
+        
+        # Set visited to true for the course. This is so that we can ignore visiting it again in the graph since we've
+        # already checked all it's dependencies and found no cycle.
+        self.visited[course] = True
+    
+    
+    
+    
+        
