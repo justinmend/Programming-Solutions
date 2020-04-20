@@ -7,30 +7,32 @@
 
 '''
 
-# Time - O(N) | Space - O(M)
-# N represents the total nodes we iteratr through in the binary tree once.
-# M represents the size of our queue which is proportional to the total
-# nodes in the binary tree input.
+# Time - O(N) | Space - O(N)
+# N represents the total amount of nodes in the binary tree.
 
 
 def invertBinaryTree(tree):
     # Assumptions:
+    # 1. Are we given a non-empty tree input?
+
     # Notes:
+    # 1. Given the head of a binary tree
+    # 2. Invert the binary tree
 
     # Brute Force:
-    # BFS? Queue?
-    # How do we properly swap nodes?
+    # BFS
 
     queue = [tree]
 
     while queue:
-        curNode = queue.pop(0)
-        if curNode.left is not None:
+        curNode = queue.pop(0)  # 5
+
+        # Make sure to check if current node's children are valid
+        # before trying to append them to the queue.
+        if curNode.left:
             queue.append(curNode.left)
-        if curNode.right is not None:
+        if curNode.right:
             queue.append(curNode.right)
-        swap(curNode)
 
-
-def swap(node):
-    node.left, node.right = node.right, node.left
+        # Swap left child with right child
+        curNode.left, curNode.right = curNode.right, curNode.left
